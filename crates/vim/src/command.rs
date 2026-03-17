@@ -3,7 +3,7 @@ use collections::{HashMap, HashSet};
 use command_palette_hooks::{CommandInterceptItem, CommandInterceptResult};
 use editor::{
     Bias, Editor, EditorSettings, SelectionEffects, ToPoint,
-    actions::{SortLinesCaseInsensitive, SortLinesCaseSensitive},
+    actions::{Rewrap, SortLinesCaseInsensitive, SortLinesCaseSensitive},
     display_map::ToDisplayPoint,
 };
 use futures::AsyncWriteExt as _;
@@ -1725,6 +1725,7 @@ fn generate_commands(_: &App) -> Vec<VimCommand> {
         )
         .range(wrap_count),
         VimCommand::new(("j", "oin"), JoinLines).range(select_range),
+        VimCommand::new(("reflow", ""), Rewrap),
         VimCommand::new(("fo", "ld"), editor::actions::FoldSelectedRanges).range(act_on_range),
         VimCommand::new(("foldo", "pen"), editor::actions::UnfoldLines)
             .bang(editor::actions::UnfoldRecursive)
