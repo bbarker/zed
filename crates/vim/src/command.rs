@@ -3537,4 +3537,33 @@ mod test {
             Mode::Normal,
         );
     }
+
+    #[gpui::test]
+    async fn test_reflow(cx: &mut TestAppContext) {
+        let mut cx = VimTestContext::new(cx, true).await;
+
+        cx.update_editor(|editor, _window, cx| {
+            editor.set_hard_wrap(Some(10), cx);
+        });
+
+        cx.set_state(
+            indoc! {"
+                ˇ0123456789 0123456789 0123456789 0123456789
+            "},
+            Mode::Normal,
+        );
+
+        cx.simulate_keystrokes(": reflow");
+        cx.simulate_keystrokes("enter");
+
+        cx.assert_state(
+            indoc! {"
+                ˇ0123456789
+                0123456789
+                0123456789
+                0123456789
+            "},
+            Mode::Normal,
+        );
+    }
 }
