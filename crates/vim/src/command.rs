@@ -3,7 +3,7 @@ use collections::{HashMap, HashSet};
 use command_palette_hooks::{CommandInterceptItem, CommandInterceptResult};
 use editor::{
     Bias, Editor, EditorSettings, SelectionEffects, ToPoint,
-    actions::{Rewrap, SortLinesCaseInsensitive, SortLinesCaseSensitive},
+    actions::{SortLinesCaseInsensitive, SortLinesCaseSensitive},
     display_map::ToDisplayPoint,
 };
 use futures::AsyncWriteExt as _;
@@ -47,6 +47,7 @@ use crate::{
         search::{FindCommand, ReplaceCommand, Replacement},
     },
     object::Object,
+    rewrap::Rewrap,
     state::{Mark, Mode},
     visual::VisualDeleteLine,
 };
@@ -3558,10 +3559,10 @@ mod test {
 
         cx.assert_state(
             indoc! {"
+                0123456789
+                0123456789
+                0123456789
                 ˇ0123456789
-                0123456789
-                0123456789
-                0123456789
             "},
             Mode::Normal,
         );
